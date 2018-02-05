@@ -3,6 +3,7 @@ import * as logger from 'morgan';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
 import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 
 import { Request, Response } from 'express';
 
@@ -12,6 +13,7 @@ let app = express();
 
 app.set('port', process.env.PORT || 8000);
 
+app.use(cors());
 app.use(compression());
 app.use(logger('dev'));
 app.use(helmet());
