@@ -12,14 +12,9 @@ export default {
         return Project.create(project);
     },
     update: function (id: number, project: ProjectInterface) {
-        return new Promise(resolve => {
-            Project.update(project, {
-                where: {
-                    id: id
-                }
-            }).then(updatedResult => {
-                resolve(Project.findById(id));
-            })
+        return new Promise(async function(resolve) {
+            const result = await Project.update(project, {where: {id: id}});
+            return resolve(Project.findById(id));
         });
     },
     delete: function (id:number) {

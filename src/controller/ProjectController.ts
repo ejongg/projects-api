@@ -3,36 +3,33 @@ import { Request, Response } from "express";
 import ProjectService from "../service/ProjectService";
 
 export default {
-    getAll: function (req: Request, res: Response) {
-        ProjectService.getAll()
-            .then(projects => res.json(projects));
+    getAll: async function (req: Request, res: Response) {
+        const projects = await ProjectService.getAll();
+        return res.json(projects);
     },
-    getById: function (req: Request, res: Response) {
+    getById: async function (req: Request, res: Response) {
         const { id } = req.params;
+        const projects = await ProjectService.getById(id);
 
-        ProjectService.getById(id)
-            .then(project => res.json(project));
+        return res.json(projects);
     },
-    create: function (req: Request, res: Response) {
-        ProjectService.create(req.body)
-            .then(project => res.json(project));
+    create: async function (req: Request, res: Response) {
+        const project = await ProjectService.create(req.body);
+        return res.json(project);
     },
-    update: function (req: Request, res: Response) {
+    update: async function (req: Request, res: Response) {
         const { id } = req.params;
-
-        ProjectService.update(id, req.body)
-            .then(project => res.json(project));
+        const project = await ProjectService.update(id, req.body);
+        return res.json(project);
     },
-    delete: function (req: Request, res: Response) {
+    delete: async function (req: Request, res: Response) {
         const { id } = req.params;
+        const result = await ProjectService.delete(id);
 
-        ProjectService.delete(id)
-            .then(result => {
-                if (result === 0) {
-                    return res.status(500).send('Not found');
-                }
+        if (result === 0) {
+            return res.status(500).send('Project not found');
+        }
 
-                res.json(result);
-            });
+        return res.json(result);
     }
 };
